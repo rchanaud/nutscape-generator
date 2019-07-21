@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Nutscape is all we need</title>
+  </head>
+  <body>
+    <style>
+      body {
+        background-color: #333;
+      }
+    </style>
+    <script src="https://unpkg.com/jimp@0.5.6/browser/lib/jimp.js"></script>
+    <script>
+      const backgroundUrl =
+        "https://cdn-europe1.lanmedia.fr/var/europe1/storage/images/europe1/politique/quinquennat-macron-un-premier-conseil-des-ministres-tres-cadre-3334409/41221664-4-fre-FR/Quinquennat-Macron-un-premier-Conseil-des-ministres-tres-cadre.jpg";
+      const maskUrl =
+        "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Testicules.svg/874px-Testicules.svg.png";
+
+      async function processImages() {
+        const background = await Jimp.read(backgroundUrl);
+        const mask = await Jimp.read(maskUrl);
+
+        const MASK_BG_SCALE_RATIO = 0.3;
+
+        const backgroundWidth = background.bitmap.width;
+        const backgroundHeight = background.bitmap.height;
+        const backgroundCenter = {
+          x: backgroundWidth / 2
+        };
+
+        const maskScaleRatio = MASK_BG_SCALE_RATIO * backgroundHeight;
+        mask
+          .resize(
+            maskScaleRatio,
+            (mask.bitmap.height * maskScaleRatio) / mask.bitmap.width
+          )
+          .gaussian(6);
+
+        const maskWidth = mask.bitmap.width;
+        const maskHeight = mask.bitmap.height;
+        const maskCenter = {
+          x: maskWidth / 2
+        };
+
+        const topStartMaskX = backgroundCenter.x - maskCenter.x;
+
+        background
+          .composite(mask, topStartMaskX, -0.4 * maskHeight, {})
+          .quality(60) // set JPEG quality
+          .getBase64(Jimp.MIME_JPEG, function(err, src) {
+            const img = document.createElement("img");
+            img.setAttribute("src", src);
+            img.style = "width:100%;";
+            document.body.appendChild(img);
+          });
+      }
+
+      processImages().catch(function(err) {
+        console.error(err);
+      });
+    </script>
+  </body>
+</html>

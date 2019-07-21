@@ -1,0 +1,22 @@
+{
+  "name": "nutscape-generator",
+  "version": "1.0.0",
+  "description": "Nutscape generator in the browser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rchanaud/nutscape-generator.git"
+  },
+  "keywords": [
+    "nutscape"
+  ],
+  "author": "Rémi Chanaud",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rchanaud/nutscape-generator/issues"
+  },
+  "homepage": "https://github.com/rchanaud/nutscape-generator#readme"
+}
